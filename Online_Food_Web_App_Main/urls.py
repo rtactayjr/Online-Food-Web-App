@@ -34,6 +34,10 @@ from . import views
 # url pattern LISTS #
 #####################
 urlpatterns = [
+
+    #path for admin
     path('admin/', admin.site.urls),
+
+    #path for functions inside views.py
     path('', views.home, name='home'),
 ]

@@ -66,10 +66,6 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
-
-
-
 # This class will allow us to define our own fields and methods.
 # Inherit AbstractBaseUser
 class CustomUser(AbstractBaseUser):
@@ -131,10 +127,6 @@ class CustomUser(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
     
-
-
-
-
 # Creating Custom-UserProfile
 class UserProfile(models.Model):
 

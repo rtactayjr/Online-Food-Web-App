@@ -81,6 +81,7 @@ def registerCustomer(request):
 
     return render(request, 'accounts/registerCustomer.html', context)
 
+
 # View function handles the registration of a Merchant
 def registerMerchant(request):
 
@@ -122,3 +123,15 @@ def registerMerchant(request):
     }
 
     return render(request, 'accounts/registerMerchant.html', context)
+
+
+def login(request):
+    return render(request, 'accounts/login.html')
+
+
+def logout(request):
+    return render(request, 'accounts/logout.html')
+
+
+def dashboard(request):
+    return render(request, 'accounts/dahboard.html')

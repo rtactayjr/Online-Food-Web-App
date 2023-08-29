@@ -71,11 +71,11 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser):
 
     # Setup custom 'Role' for user.
-    RESTAURANT = 1
+    MERCHANT = 1
     CUSTOMER = 2
 
     ROLE_CHOICE = (
-        (RESTAURANT, 'Restaurant'),
+        (MERCHANT, 'Merchant'),
         (CUSTOMER, 'Customer'),
     )
 

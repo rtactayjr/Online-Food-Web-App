@@ -37,9 +37,10 @@
                         <div class="login-option">
                             <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" data-toggle="modal" href="#user-register">Login</a> / 
 
-                                <!-- get the url from accounts/urls.py -->
+                                <!-- Get the url from accounts/urls.py -->
+                                <!-- Setup the url for Register/Register Merchant Button -->
                                <span><a href="{% url 'registerCustomer'%}" class="cs-color cs-popup-joinus-btn login-popup ml-0" >Register</a></span>
-                            <a class="get-start-btn" href="register-restaurant.html">Register Restaurant </a>
+                            <a class="get-start-btn" href="{% url 'registerMerchant' %}">Register as Merchant </a>
                         </div>
                     </div>
                 </div>

@@ -5,7 +5,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.tokens import default_token_generator
 from django.core.exceptions import PermissionDenied
+from django.utils.http import urlsafe_base64_decode
 
 
 ##########################################
@@ -13,7 +15,7 @@ from django.core.exceptions import PermissionDenied
 ##########################################
 from . forms import CustomUserForm
 from . models import CustomUser, UserProfile
-from . utils import detectUser
+from . utils import detectUser, send_verification_email
 
 from merchant.forms import MerchantForm
 
@@ -21,6 +23,24 @@ from merchant.forms import MerchantForm
 #############################
 # defined functions - views #
 #############################
+
+def activate(request, uidb64, token):
+    # Activate the user by setting the is_active status to True
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = CustomUser._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Congratulation! Your account is activated.')
+        return redirect('myAccount')
+    else:
+        messages.error(request, 'Invalid activation link')
+        return redirect('myAccount')
+
 
 """ Handles Registration for Customer and Merchants """
 # View function handles the registration of a user.
@@ -55,6 +75,11 @@ def registerCustomer(request):
             # Save the user instance to DB and redirect user to the same page.
             form.save()
 
+            # Send verification email
+            mail_subject = 'Please activate your account'
+            email_template = 'accounts/emails/account_verification_email.html'
+            send_verification_email(request, user, mail_subject, email_template)
+            
             # Add message, 'success' can be changed - check bootstrap documentation
             # connected to 'alerts.html'
             messages.success(request, 'Your account has been successfully registered! Thank you!')

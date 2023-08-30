@@ -31,4 +31,7 @@ urlpatterns = [
     # Both path are separated for Customer and Merchant
     path('customerDashboard/', views.customerDashboard, name='customerDashboard'),
     path('merchantDashboard/', views.merchantDashboard, name='merchantDashboard'),
+
+    path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+
 ]

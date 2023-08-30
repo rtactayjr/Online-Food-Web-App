@@ -2,8 +2,11 @@
 
 {% block content %}
 
+<!-- user.username and user.get_role are from views.py defined functions.
+they are included in context form. -->
+
 <h4>Welcome {{ user.username }}</h4>
-<p> This is a {{ Customuser.get_role }}</p>
+<p> This is a {{ user.get_role }}</p>
 {% include 'includes/alerts.html' %}
 
 {% endblock %}

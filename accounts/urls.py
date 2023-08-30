@@ -28,6 +28,7 @@ urlpatterns = [
     # Path is used for determining user role
     path('myAccount/', views.myAccount, name='myAccount'),
 
+    # Both path are separated for Customer and Merchant
     path('customerDashboard/', views.customerDashboard, name='customerDashboard'),
     path('merchantDashboard/', views.merchantDashboard, name='merchantDashboard'),
 ]

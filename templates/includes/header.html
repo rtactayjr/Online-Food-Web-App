@@ -28,13 +28,15 @@
                                         <input type="text" value="" name="location" placeholder="Enter your delivery location" autocomplete="off">
                                         <span id="foodbakery_radius_location_open" class="foodbakery-radius-location"><i class="icon-target5"></i></span>
                                     </form>
-                                    
                                 </li>
                             </ul>
-                            </div>
+                        </div>
                     </div>
+                    
                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                         <div class="login-option">
+
+                            <!-- A condition to manage the available options for users prior to or following login. -->
                             {% if user.is_authenticated %}
                             <a class="cs-color cs-popup-joinus-btn login-popup" href="{% url 'myAccount' %}">My Account</a>
                             <a class="cs-color cs-popup-joinus-btn login-popup text-danger" data-target="#sign-in" href="{% url 'logout' %}">Logout</a>

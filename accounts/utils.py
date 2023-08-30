@@ -1,3 +1,9 @@
+
+#####################
+# defined functions #
+#####################
+
+# Below Function is used for detecting the user role.
 def detectUser(user):
     if user.role == 1:
         redirectUrl = 'merchantDashboard'

@@ -22,22 +22,7 @@ from merchant.forms import MerchantForm
 # defined functions - views #
 #############################
 
-# Restrict the vendor from accessing the customer page
-def check_role_merchant(user):
-    if user.role == 1:
-        return True
-    else:
-        raise PermissionDenied
-
-
-# Restrict the customer from accessing the vendor page
-def check_role_customer(user):
-    if user.role == 2:
-        return True
-    else:
-        raise PermissionDenied
-
-
+""" Handles Registration for Customer and Merchants """
 # View function handles the registration of a user.
 def registerCustomer(request):
 
@@ -71,6 +56,7 @@ def registerCustomer(request):
             form.save()
 
             # Add message, 'success' can be changed - check bootstrap documentation
+            # connected to 'alerts.html'
             messages.success(request, 'Your account has been successfully registered! Thank you!')
 
             return redirect(registerCustomer)
@@ -97,13 +83,12 @@ def registerCustomer(request):
     # Return the user to the empty instance of form if method is not 'POST'
     else:
         form = CustomUserForm()
-    
 
     # Dictionary that stores form instance and renders the template passing the context.
     context = {
         'form': form,
     }
-
+    
     return render(request, 'accounts/registerCustomer.html', context)
 
 
@@ -111,9 +96,8 @@ def registerCustomer(request):
 def registerMerchant(request):
     # Handle restriction when accessing registration page while user is logged in.
     if request.user.is_authenticated:
-        messages.warning(request, 'You are already logged in')
+        messages.warning(request, 'You are already logged in') # connected to 'alerts.html'
         return redirect('myAccount')
-
 
     elif request.method == 'POST':
         # store the data and create the user
@@ -135,8 +119,8 @@ def registerMerchant(request):
             user_profile = UserProfile.objects.get(user=user)
             merchant.user_profile = user_profile
             merchant.save()
-
-            messages.success(request, 'Your account has been registered successfully!')
+            
+            messages.success(request, 'Your account has been registered successfully!') # connected to 'alerts.html'
             return redirect('registerMerchant')
 
         else:
@@ -155,10 +139,12 @@ def registerMerchant(request):
     return render(request, 'accounts/registerMerchant.html', context)
 
 
+""" Handles Login and Logout - authentication """
+
 def login(request):
     # Handle restriction when accessing login page while user is logged in.
     if request.user.is_authenticated:
-        messages.warning(request, 'You are already logged in')
+        messages.warning(request, 'You are already logged in') # connected to 'alerts.html'
         return redirect('myAccount')
 
     # Handling the user authentication
@@ -168,36 +154,55 @@ def login(request):
 
         user = auth.authenticate(email=email, password=password)
 
+        # Check if the user is exist, otherwise throw an error and stay in login page.
         if user is not None:
             auth.login(request, user)
-            messages.success(request, 'You are now logged in!')
+            messages.success(request, 'You are now logged in!') # connected to 'alerts.html'
             return redirect('myAccount')
         else:
-            messages.error(request, 'Login failed')
+            messages.error(request, 'Login failed') # connected to 'alerts.html'
             return redirect('login')
 
     return render(request, 'accounts/login.html')
 
-
+# Handles the logout of the account
 def logout(request):
     auth.logout(request)
-    messages.info(request, 'Logout successful')
+    messages.info(request, 'Logout successful') # connected to 'alerts.html'
     return redirect('login')
 
 
+""" Handles Role Detection and Url Redirection """
+
+# Restrict the vendor from accessing the customer page
+def check_role_merchant(user):
+    if user.role == 1:
+        return True
+    else:
+        raise PermissionDenied
+
+# Restrict the customer from accessing the vendor page
+def check_role_customer(user):
+    if user.role == 2:
+        return True
+    else:
+        raise PermissionDenied
+
+# Handles the user detection of user Role
+# Function 'detectUser' is from utils.py
 @login_required(login_url='login')
 def myAccount(request):
     user  =  request.user
     redirectUrl = detectUser(user)
     return redirect(redirectUrl)
 
-
+# redirect Merchant to Merchant Dashboard
 @login_required(login_url='login')
 @user_passes_test(check_role_merchant)
 def merchantDashboard(request):
     return render(request, 'accounts/merchantDashboard.html')
 
-
+# redirect to Customer Dashboard
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def customerDashboard(request):

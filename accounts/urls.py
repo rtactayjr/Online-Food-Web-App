@@ -25,6 +25,9 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
 
-    # Add path to Dashboard, will be viewed once User is logged in
-    path('dashboard/', views.dashboard, name='dashboard'),
+    # Path is used for determining user role
+    path('myAccount/', views.myAccount, name='myAccount'),
+
+    path('customerDashboard/', views.customerDashboard, name='customerDashboard'),
+    path('merchantDashboard/', views.merchantDashboard, name='merchantDashboard'),
 ]

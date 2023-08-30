@@ -3,13 +3,17 @@
 ##################
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied
+
 
 ##########################################
 #  import modules from current directory #
 ##########################################
 from . forms import CustomUserForm
 from . models import CustomUser, UserProfile
+from . utils import detectUser
 
 from merchant.forms import MerchantForm
 
@@ -18,11 +22,32 @@ from merchant.forms import MerchantForm
 # defined functions - views #
 #############################
 
+# Restrict the vendor from accessing the customer page
+def check_role_merchant(user):
+    if user.role == 1:
+        return True
+    else:
+        raise PermissionDenied
+
+
+# Restrict the customer from accessing the vendor page
+def check_role_customer(user):
+    if user.role == 2:
+        return True
+    else:
+        raise PermissionDenied
+
+
 # View function handles the registration of a user.
 def registerCustomer(request):
 
+    # Handle restriction when accessing registration page while user is logged in.
+    if request.user.is_authenticated:
+        messages.warning(request, 'You are already logged in')
+        return redirect('myAccount')
+
     # Check if the request method is POST
-    if request.method == 'POST':
+    elif request.method == 'POST':
 
         # This initializes a CustomUserForm instance using the data from the submitted POST request
         form = CustomUserForm(request.POST)
@@ -84,8 +109,13 @@ def registerCustomer(request):
 
 # View function handles the registration of a Merchant
 def registerMerchant(request):
+    # Handle restriction when accessing registration page while user is logged in.
+    if request.user.is_authenticated:
+        messages.warning(request, 'You are already logged in')
+        return redirect('myAccount')
 
-    if request.method == 'POST':
+
+    elif request.method == 'POST':
         # store the data and create the user
         form = CustomUserForm(request.POST)
         merchant_form = MerchantForm(request.POST, request.FILES)
@@ -126,12 +156,49 @@ def registerMerchant(request):
 
 
 def login(request):
+    # Handle restriction when accessing login page while user is logged in.
+    if request.user.is_authenticated:
+        messages.warning(request, 'You are already logged in')
+        return redirect('myAccount')
+
+    # Handling the user authentication
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user = auth.authenticate(email=email, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request, 'You are now logged in!')
+            return redirect('myAccount')
+        else:
+            messages.error(request, 'Login failed')
+            return redirect('login')
+
     return render(request, 'accounts/login.html')
 
 
 def logout(request):
-    return render(request, 'accounts/logout.html')
+    auth.logout(request)
+    messages.info(request, 'Logout successful')
+    return redirect('login')
 
 
-def dashboard(request):
-    return render(request, 'accounts/dahboard.html')
+@login_required(login_url='login')
+def myAccount(request):
+    user  =  request.user
+    redirectUrl = detectUser(user)
+    return redirect(redirectUrl)
+
+
+@login_required(login_url='login')
+@user_passes_test(check_role_merchant)
+def merchantDashboard(request):
+    return render(request, 'accounts/merchantDashboard.html')
+
+
+@login_required(login_url='login')
+@user_passes_test(check_role_customer)
+def customerDashboard(request):
+    return render(request, 'accounts/customerDashboard.html')

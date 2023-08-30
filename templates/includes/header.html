@@ -35,12 +35,18 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                         <div class="login-option">
-                            <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" data-toggle="modal" href="#user-register">Login</a> / 
+                            {% if user.is_authenticated %}
+                            <a class="cs-color cs-popup-joinus-btn login-popup" href="{% url 'myAccount' %}">My Account</a>
+                            <a class="cs-color cs-popup-joinus-btn login-popup text-danger" data-target="#sign-in" href="{% url 'logout' %}">Logout</a>
+
+                            {% else %}
+                            <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" href="{% url 'login' %}">Login</a> / 
 
                                 <!-- Get the url from accounts/urls.py -->
                                 <!-- Setup the url for Register/Register Merchant Button -->
                                <span><a href="{% url 'registerCustomer'%}" class="cs-color cs-popup-joinus-btn login-popup ml-0" >Register</a></span>
                             <a class="get-start-btn" href="{% url 'registerMerchant' %}">Register as Merchant </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

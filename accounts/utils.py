@@ -40,6 +40,20 @@ def send_verification_email(request, user, mail_subject, email_template):
     mail.content_subtype = "html" # Indicates that the email content is HTML.
     mail.send()
 
+
+def send_notification(mail_subject, mail_template, context):
+    from_email = settings.DEFAULT_FROM_EMAIL
+    message = render_to_string(mail_template, context)
+    if(isinstance(context['to_email'], str)):
+        to_email = []
+        to_email.append(context['to_email'])
+    else:
+        to_email = context['to_email']
+    mail = EmailMessage(mail_subject, message, from_email, to=to_email)
+    mail.content_subtype = "html"
+    mail.send()
+
+
 # Below Function is used for detecting the user role.
 def detectUser(user):
     if user.role == 1:

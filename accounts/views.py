@@ -24,11 +24,13 @@ from merchant.forms import MerchantForm
 # defined functions - views #
 #############################
 
+""" Handles Reset Password Feature and Validation """
 
 def forgot_password(request):
     if request.method == 'POST':
         email = request.POST['email']
 
+        # Get user exact email address
         if CustomUser.objects.filter(email=email).exists():
             user = CustomUser.objects.get(email__exact=email)
 
@@ -59,7 +61,6 @@ def reset_password_validate(request, uidb64, token):
     else:
         messages.error(request, 'This link has been expired!')
         return redirect('myAccount')
-
 
 def reset_password(request):
     if request.method == 'POST':

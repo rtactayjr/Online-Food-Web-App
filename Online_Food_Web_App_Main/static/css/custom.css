@@ -86,3 +86,7 @@ table > tbody > tr > td{
 table td, table th{
     line-height: 1rem !important;
 }
+
+.float-right{
+    margin-top: 20px;
+}

@@ -38,10 +38,10 @@ from . import views
 #####################
 urlpatterns = [
 
-    #path for admin
+    # path for admin
     path('admin/', admin.site.urls),
 
-    #path for functions inside views.py
+    # path for functions inside views.py
     path('', views.home, name='home'),
 
     # When user go to 'accounts/' path. they have access to 'accounts app - urls.py'

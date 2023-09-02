@@ -13,30 +13,21 @@
 
 <!-- Main Section Start -->
 <div class="main-section">
-
-	<!-- Include the content of the 'cover_section.html' template to display a cover section. -->
     {% include 'includes/cover_section.html' %}
-
     <div class="page-section account-header buyer-logged-in">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-
                     <!-- Load the sidebar here -->
                     {% include 'includes/merchant_sidebar.html' %}
-
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                     <div class="user-dashboard loader-holder">
                         <div class="user-holder">
                             <h5 class="text-uppercase">Manage Your Restaurant</h5>
-
 									<!-- My Restaurants Form Start -->
-
-									<!-- connected to merchant/urls.py -->
 									<form action="{% url 'merchantProfile' %}" method="POST" enctype="multipart/form-data">
                                         {% csrf_token %}
-
 										<div class="form-fields-set">
 											<ul>
 												<li>
@@ -47,31 +38,24 @@
 																	<ul class="foodbakery-gallery-holder">
 																		<li class="gal-img">
 																			<div class="drag-list">
-
 																				<div class="item-thumb">
 																					{% if profile.profile_picture %}
-																						<!-- Display the user's profile picture if available. -->
-																						<img class="thumbnail" src="{{profile.profile_picture.url}}" alt="Profile Picture">
+																					<img class="thumbnail" src="{{profile.profile_picture.url}}" alt="Profile Picture">
 																					{% else %}
-																						<!-- Display a default profile picture if the user does not have one. -->
-																						<img class="thumbnail" src="{% static 'images/default-profile.png' %}" alt="Profile Picture">
+																					<img class="thumbnail" src="{% static 'images/default-profile.png' %}" alt="Profile Picture">
 																					{% endif %}
 																				</div>
-
 																			</div>
 																		</li>
 																	</ul>
 																</div>
-
 																<div class="text-holder">
 																	<label>Update Profile Picture</label>
 																	<div class="upload-gallery">
 																		{{profile_form.profile_picture}}
 																	</div>
 																</div>
-
 																<label class="text-danger">{{ profile_form.profile_picture.errors }}</label>
-
 															</div>
 														</div>
 														<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -80,7 +64,6 @@
 																	<ul class="foodbakery-gallery-holder">
 																		<li class="gal-img">
 																			<div class="drag-list">
-
 																				<div class="item-thumb">
 																					{% if profile.cover_photo %}
 																					<img class="thumbnail" src="{{profile.cover_photo.url}}" alt="Cover Photo">
@@ -88,12 +71,10 @@
 																					<img class="thumbnail" src="{% static 'images/default-cover.png' %}" alt="Cover Photo">
 																					{% endif %}
 																				</div>
-
 																			</div>
 																		</li>
 																	</ul>
 																</div>
-
 																<div class="text-holder">
 																	<label>Update Cover Photo</label>
 																	<div class="upload-gallery">
@@ -102,7 +83,6 @@
 																	
 																</div>
 																<label class="text-danger">{{ profile_form.cover_photo.errors }}</label>
-
 															</div>
 														</div>
 														<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -111,16 +91,13 @@
 																	<ul class="foodbakery-gallery-holder">
 																		<li class="gal-img">
 																			<div class="drag-list">
-
 																				<div class="item-thumb">
-																					<img class="thumbnail" src="{{merchant.merchant_license.url}}" alt="Merchant License">
+																					<img class="thumbnail" src="{{merchant.merchant_license.url}}" alt="merchant License">
 																				</div>
-
 																			</div>
 																		</li>
 																	</ul>
 																</div>
-
 																<div class="text-holder">
 																	<label>Update License</label>
 																	<div class="upload-gallery">
@@ -211,4 +188,5 @@
     </div>
 </div>
 <!-- Main Section End -->
+
 {% endblock %}

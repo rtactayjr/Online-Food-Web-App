@@ -28,10 +28,10 @@ style=" background: url({% if merchant.user_profile.cover_photo %} {{ merchant.u
                         <div class="text-holder">
                             <span class="restaurant-title">{{merchant.merchant_name}}</span>
                             <div class="text">
-                                {% if merchant.user_profile.full_address %}
+                                {% if merchant.user_profile.address %}
                                     <!-- Display the merchant's full address with a location icon if available. -->
                                     <i class="icon-location"></i>
-                                    <p>{{merchant.user_profile.full_address}}</p>
+                                    <p>{{merchant.user_profile.address}}</p>
                                 {% endif %}
                             </div>
                         </div>

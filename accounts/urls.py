@@ -15,33 +15,37 @@ from . import views
 #####################
 urlpatterns = [
 
-    # Add this path for url accounts/ - it will redirect the user based on 'myAccount' functionality.
-    path('', views.myAccount),
+    # URL for the default user landing page, redirects based on user role
+    path('', views.myAccount, name='myAccount'),
 
-    # Adding Customer login page
+    # URL for registering a new customer
     path('registerCustomer/', views.registerCustomer, name='registerCustomer'),
 
-    # Adding Merchant login page
+    # URL for registering a new merchant
     path('registerMerchant/', views.registerMerchant, name='registerMerchant'),
 
-    # Adding Login/Logout Path
+    # URLs for user authentication: login and logout
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
 
-    # Path is used for determining user role
+    # URL for determining user role (used internally)
     path('myAccount/', views.myAccount, name='myAccount'),
 
-    # Both path are separated for Customer and Merchant
+    # URLs for Customer and Merchant Dashboards
     path('customerDashboard/', views.customerDashboard, name='customerDashboard'),
     path('merchantDashboard/', views.merchantDashboard, name='merchantDashboard'),
 
+    # URL for user account activation
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
 
-    # Password Reset / Forgot Password
+    # URLs for password reset/forgot password functionality
     path('forgot_password/', views.forgot_password, name='forgot_password'),
     path('reset_password_validate/<uidb64>/<token>/', views.reset_password_validate, name='reset_password_validate'),
     path('reset_password/', views.reset_password, name='reset_password'),
 
+    # URL for accessing the "Merchant" app (including its own URLs)
     path('merchant/', include('merchant.urls')),
+
+
     # path('customer/', include('customers.urls')),
 ]

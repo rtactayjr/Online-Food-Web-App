@@ -7,9 +7,6 @@ from django.db.models.fields.related import OneToOneField
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
-
-
-
 #####################
 # create class here #
 #####################
@@ -65,6 +62,7 @@ class CustomUserManager(BaseUserManager):
         # Save using the current database connection
         user.save(using=self._db)
         return user
+
 
 # This class will allow us to define our own fields and methods.
 # Inherit AbstractBaseUser

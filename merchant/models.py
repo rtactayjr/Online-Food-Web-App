@@ -36,24 +36,34 @@ class Merchant(models.Model):
     def __str__(self):
         return self.merchant_name
     
-    # Override the 'save' function from admin in order to send user account activation - notification
+    # Override the save method to perform additional actions
     def save(self, *args, **kwargs):
+
+        # Check if the instance already exists in the database (not a new instance)
         if self.pk is not None:
-            # Update
+
+            # Retrieve the original instance of the Merchant model before the update
             orig = Merchant.objects.get(pk=self.pk)
+
+            # Check if the 'is_approved' field has changed between the original and updated instances
             if orig.is_approved != self.is_approved:
+
                 mail_template = 'accounts/emails/admin_approval_email.html'
                 context = {
                     'user': self.user,
                     'is_approved': self.is_approved,
                     'to_email': self.user.email,
                 }
+
                 if self.is_approved == True:
-                    # Send notification email
+
+                    # Send a notification email for approval
                     mail_subject = "Congratulations! Your restaurant has been approved."
                     send_notification(mail_subject, mail_template, context)
                 else:
-                    # Send notification email
+                    # Send a notification email for disapproval
                     mail_subject = "We're sorry! You are not eligible for publishing your food menu on our marketplace."
                     send_notification(mail_subject, mail_template, context)
+
+        # Save the updated Merchant instance and return the result 
         return super(Merchant, self).save(*args, **kwargs)

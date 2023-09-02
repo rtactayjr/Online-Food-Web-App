@@ -4,11 +4,11 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
+
 ##########################################
 #  import modules from current directory #
 ##########################################
 from . models import CustomUser, UserProfile
-
 
 
 #####################
@@ -20,6 +20,7 @@ from . models import CustomUser, UserProfile
 In summary, this code uses signals to perform certain actions before and after saving instances of the CustomUser model. 
 The post_save signal creates or updates a related UserProfile instance, while the pre_save signal prints a message when a user is being saved.
 """
+
 # This part of the code listens for the post_save signal when a CustomUser instance is saved.
 @receiver(post_save, sender=CustomUser)
 def post_save_create_profile_receiver(sender, instance, created, **kwargs):

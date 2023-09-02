@@ -15,9 +15,12 @@ from accounts import views as AccountViews
 #####################
 urlpatterns = [
 
+    # URL for the Merchant Dashboard view
     path('', AccountViews.merchantDashboard, name='merchantDashboard'),
 
+    # URL for the Merchant Profile view
     path('profile/', views.merchantProfile, name='merchantProfile'),
+
 
     # path('menu-builder/', views.menu_builder, name='menu_builder'),
     # path('menu-builder/category/<int:pk>/', views.fooditems_by_category, name='fooditems_by_category'),

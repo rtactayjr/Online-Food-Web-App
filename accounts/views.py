@@ -9,7 +9,6 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.exceptions import PermissionDenied
 from django.utils.http import urlsafe_base64_decode
 
-
 ##########################################
 #  import modules from current directory #
 ##########################################
@@ -20,12 +19,14 @@ from . utils import detectUser, send_verification_email
 from merchant.forms import MerchantForm
 from merchant.models import Merchant
 
+
+
+
 #############################
 # defined functions - views #
 #############################
 
 """ Handles Reset Password Feature and Validation """
-
 def forgot_password(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -41,46 +42,87 @@ def forgot_password(request):
 
             messages.success(request, 'Password reset link has been sent to your email address.')
             return redirect('login')
+        
         else:
             messages.error(request, 'Account does not exist')
             return redirect('forgot_password')
     return render(request, 'accounts/forgot_password.html')
 
 def reset_password_validate(request, uidb64, token):
-    # validate the user by decoding the token and user pk
+    # Try to validate the user by decoding the token and user pk
     try:
+        # Decode the URL-safe base64 encoded string 'uidb64' and convert it to a plain string 'uid'
         uid = urlsafe_base64_decode(uidb64).decode()
+
+        # Attempt to retrieve a user object from the database using the decoded 'uid' as the primary key
         user = CustomUser._default_manager.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+
+    # Handle exceptions that might occur during the validation process
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        # If an exception occurs, set 'user' to 'None' to indicate validation failure
         user = None
 
+    # Check if the 'user' object is not 'None' and if the provided 'token' is valid
     if user is not None and default_token_generator.check_token(user, token):
+        # If both conditions are met, store the 'uid' in the session (for password reset context)
         request.session['uid'] = uid
+
+        # Provide an informational message to the user
         messages.info(request, 'Please reset your password')
+
+        # Redirect the user to the 'reset_password' view
         return redirect('reset_password')
+    
     else:
-        messages.error(request, 'This link has been expired!')
+        # If the user is 'None' or the token is invalid, show an error message
+        messages.error(request, 'This link has expired!')
+
+        # Redirect the user to the 'myAccount' view
         return redirect('myAccount')
 
+
 def reset_password(request):
+    # Check if the HTTP request method is POST (indicating a form submission)
     if request.method == 'POST':
+        # Get the 'password' and 'confirm_password' values from the POST data
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
 
+        # Check if the entered 'password' matches the 'confirm_password'
         if password == confirm_password:
+            # Retrieve the 'uid' from the session (set during the password reset link validation)
             pk = request.session.get('uid')
+            
+            # Retrieve the user associated with the 'uid'
             user = CustomUser.objects.get(pk=pk)
+
+            # Set the user's password to the new password
             user.set_password(password)
+
+            # Activate the user by setting 'is_active' to True
             user.is_active = True
+
+            # Save the user object with the updated password and activation status
             user.save()
+
+            # Provide a success message to the user
             messages.success(request, 'Password reset successful')
+
+            # Redirect the user to the 'login' view
             return redirect('login')
         else:
-            messages.error(request, 'Password do not match!')
+            # If the entered passwords do not match, show an error message
+            messages.error(request, 'Passwords do not match!')
+
+            # Redirect the user back to the 'reset_password' view
             return redirect('reset_password')
+
+    # If the HTTP request method is not POST, render the 'reset_password' template
     return render(request, 'accounts/reset_password.html')
 
 
+
+""" Handles Account activation for Merchants/Customers """
 # This function is used to activate a user's account based on a verification link they've clicked
 def activate(request, uidb64, token):
     try:
@@ -102,6 +144,7 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, 'Invalid activation link')
         return redirect('myAccount')
+
 
 
 """ Handles Registration for Customer and Merchants """
@@ -182,58 +225,77 @@ def registerCustomer(request):
 # View function handles the registration of a Merchant
 def registerMerchant(request):
     
-    # Handle restriction when accessing registration page while user is logged in.
+    # Check if the user is already authenticated (logged in)
     if request.user.is_authenticated:
-        messages.warning(request, 'You are already logged in') # connected to 'alerts.html'
+
+        # If logged in, show a warning message and redirect to 'myAccount'
+        messages.warning(request, 'You are already logged in')  # Connected to 'alerts.html'
         return redirect('myAccount')
 
+    # If the HTTP request method is POST (form submission)
     elif request.method == 'POST':
-        # store the data and create the user
+        # Create form instances for 'CustomUserForm' and 'MerchantForm' using POST data
         form = CustomUserForm(request.POST)
         merchant_form = MerchantForm(request.POST, request.FILES)
 
+        # Check if both forms are valid
         if form.is_valid() and merchant_form.is_valid():
+            # Extract cleaned data from the 'CustomUserForm'
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = CustomUser.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)            
+
+            # Create a new user using the extracted data
+            user = CustomUser.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
+            
+            # Set the user's role to 'MERCHANT'
             user.role = CustomUser.MERCHANT
             user.save()
 
-            merchant =  merchant_form.save(commit=False)
+            # Create a new merchant instance and associate it with the user
+            merchant = merchant_form.save(commit=False)
             merchant.user = user
+
+            # Get the user's profile and associate it with the merchant
             user_profile = UserProfile.objects.get(user=user)
             merchant.user_profile = user_profile
             merchant.save()
 
-            # Send verification email
+            # Send a verification email
             mail_subject = 'Please activate your account'
             email_template = 'accounts/emails/account_verification_email.html'
             send_verification_email(request, user, mail_subject, email_template)
 
-            messages.success(request, 'Your account has been registered successfully!') # connected to 'alerts.html'
+            # Provide a success message to the user
+            messages.success(request, 'Your account has been registered successfully')  # Connected to 'alerts.html'
             return redirect('registerMerchant')
 
         else:
+            # If the forms are invalid, print error messages (for debugging) and handle as needed
             print("Invalid Form")
             print(form.errors)
+
+    # If the HTTP request method is not POST, render the registration form
     else:
-        form = CustomUserForm(request.POST)
-        
-    merchant_form = MerchantForm(request.POST, request.FILES)
-    
+        # Create form instances for 'CustomUserForm' and 'MerchantForm'
+        form = CustomUserForm()
+        merchant_form = MerchantForm()
+
+    # Create a context dictionary with form instances
     context = {
         'form': form,
         'merchant_form': merchant_form,
     }
 
+    # Render the 'registerMerchant' template with the context
     return render(request, 'accounts/registerMerchant.html', context)
 
 
-""" Handles Login and Logout - authentication """
 
+
+""" Handles Login and Logout - authentication """
 def login(request):
     # Handle restriction when accessing login page while user is logged in.
     if request.user.is_authenticated:
@@ -265,44 +327,52 @@ def logout(request):
     return redirect('login')
 
 
+
 """ Handles Role Detection and Url Redirection """
 
-# Restrict the vendor from accessing the customer page
+# Check if the user has the 'MERCHANT' role, if not, raise a PermissionDenied exception
 def check_role_merchant(user):
-    if user.role == 1:
+    if user.role == CustomUser.MERCHANT:
         return True
     else:
         raise PermissionDenied
 
-# Restrict the customer from accessing the vendor page
+# Check if the user has the 'CUSTOMER' role, if not, raise a PermissionDenied exception
 def check_role_customer(user):
-    if user.role == 2:
+    if user.role == CustomUser.CUSTOMER:
         return True
     else:
         raise PermissionDenied
 
-# Handles the user detection of user Role
-# Function 'detectUser' is from utils.py
+# Handles user detection of user Role and redirects accordingly
 @login_required(login_url='login')
 def myAccount(request):
-    user  =  request.user
-    redirectUrl = detectUser(user)
-    return redirect(redirectUrl)
+    # Get the currently logged-in user
+    user = request.user
 
-# redirect Merchant to Merchant Dashboard
+    # Detect the appropriate redirect URL based on the user's role
+    redirect_url = detectUser(user)
+
+    # Redirect the user to the determined URL
+    return redirect(redirect_url)
+
+# Redirects the merchant to the Merchant Dashboard
 @login_required(login_url='login')
 @user_passes_test(check_role_merchant)
 def merchantDashboard(request):
-    merchant  =  Merchant.objects.get(user=request.user)
+    # Get the merchant associated with the currently logged-in user
+    merchant = Merchant.objects.get(user=request.user)
 
     context = {
         'merchant': merchant,
     }
     
+    # Render the 'merchantDashboard' template with the merchant's context
     return render(request, 'accounts/merchantDashboard.html', context)
 
-# redirect to Customer Dashboard
+# Redirects to the Customer Dashboard
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def customerDashboard(request):
+    # Render the 'customerDashboard' template
     return render(request, 'accounts/customerDashboard.html')

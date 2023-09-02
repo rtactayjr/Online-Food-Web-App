@@ -36,19 +36,36 @@ def send_verification_email(request, user, mail_subject, email_template):
     })
     
     to_email = user.email # receipient email address
+    
     mail = EmailMessage(mail_subject, message, from_email, to=[to_email]) # Email object is created with the subject, content, sender, and recipient.
     mail.content_subtype = "html" # Indicates that the email content is HTML.
     mail.send()
 
 
+# Send Notification Email wether the merchat is eligible for Approval or Not.
 def send_notification(mail_subject, mail_template, context):
+    
+    # Gets the default "from" email 
     from_email = settings.DEFAULT_FROM_EMAIL
+
+    # Email's content will be rendered as HTML
     message = render_to_string(mail_template, context)
-    if(isinstance(context['to_email'], str)):
+
+    # It ensures that you can provide a single email address as a string or multiple email addresses as an iterable, and the code will handle both cases.
+    # Check if the value stored in 'context['to_email']' is a string (single email address)
+    if isinstance(context['to_email'], str):
+
+        # If it's a string, create an empty list 'to_email'
         to_email = []
+
+        # Append the email address to the 'to_email' list
         to_email.append(context['to_email'])
+
     else:
+        # If it's not a string (assumed to be an iterable, e.g., list or tuple),
+        # assign the value directly to 'to_email'
         to_email = context['to_email']
+
     mail = EmailMessage(mail_subject, message, from_email, to=to_email)
     mail.content_subtype = "html"
     mail.send()

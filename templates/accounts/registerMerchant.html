@@ -20,8 +20,11 @@
                     <p class="text-center">Register your restaurant with Food-Online marketplace and get more customers.</p>
                     <hr>
                     <div id="restaurant-sets-holder">
+
+                        <!-- connected to accounts/urls.py -->
                         <form action="{% url 'registerMerchant' %}" class="form-fields-set foodbakery-dev-restaurant-form" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
+
                             <ul class="register-add-restaurant-tab-container restaurant-information-tab-container">
                                 <li>
                                     <div class="row">
@@ -85,7 +88,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <!-- <ul class="errorlist">
+                                    <ul class="errorlist">
                                         {% for field in form %}
                                             {% if field.errors %}
                                                 {% for error in field.errors %}
@@ -95,7 +98,7 @@
                                         {% endfor %}
                                         
                                         <li style="color: red;">{{form.non_field_errors}}</li>
-                                    </ul> -->
+                                    </ul>
 
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

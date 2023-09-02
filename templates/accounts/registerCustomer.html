@@ -1,11 +1,10 @@
-<!-- extending base.html inorder for footer/header to appear -->
-<!-- 'base' also contains the links to css, fonts, js etc -->
+<!-- This template inherits from the 'base.html' template, providing a consistent layout. -->
 {% extends 'base.html' %}
 
-<!-- Load the static files css,js,images etc -->
-{% load static%}
+<!-- Load static files such as CSS, JavaScript, or images for use in this template. -->
+{% load static %}
 
-<!-- the content will be inserted to base.html once 'registerUser.html' is loaded -->
+<!-- This block defines the 'content' section of the template, which can be overridden. -->
 {% block content %}
 
 <!-- Main Section Start -->

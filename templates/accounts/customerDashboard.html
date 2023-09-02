@@ -1,10 +1,15 @@
+<!-- This template inherits from the 'base.html' template, providing a consistent layout. -->
 {% extends 'base.html' %}
 
+<!-- Load static files such as CSS, JavaScript, or images for use in this template. -->
 {% load static %}
 
+<!-- This block defines the 'content' section of the template, which can be overridden. -->
 {% block content %}
 
+<!-- Include the content of the 'alerts.html' template to display alert messages. -->
 {% include 'includes/alerts.html' %}
+
 
 <!-- Main Section Start -->
 <div class="main-section">

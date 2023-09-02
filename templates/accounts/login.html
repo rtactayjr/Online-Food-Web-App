@@ -1,6 +1,12 @@
+<!-- This template inherits from the 'base.html' template, providing a consistent layout. -->
 {% extends 'base.html' %}
 
+<!-- Load static files such as CSS, JavaScript, or images for use in this template. -->
+{% load static %}
+
+<!-- This block defines the 'content' section of the template, which can be overridden. -->
 {% block content %}
+
 <!-- Main Section Start -->
 <div class="main-section">
     <div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 60px;margin-bottom: 0px;">
@@ -13,8 +19,11 @@
                     <p class="text-center">Order food from your favorite Food Merchants!.</p>
                     <hr>
                     <div id="restaurant-sets-holder">
+
+                        <!-- connected to accounts/urls.py -->
                         <form action="{% url 'login' %}" class="form-fields-set foodbakery-dev-restaurant-form" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
+
                             <ul class="register-add-restaurant-tab-container restaurant-information-tab-container">
                                 <li>
                                     <div class="row">
@@ -44,6 +53,8 @@
                                             <div class="field-holder">
                                                 <div class="payment-holder">
                                                     <input type="submit" value="Submit" id="btn-next-restaurant-information" class="bgcolor">
+
+                                                    <!-- connected to accounts/urls.py -->
                                                     <a href="{% url 'forgot_password' %}" class="float-right">Forgot password</a>
                                                 </div>
                                             </div>

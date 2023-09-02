@@ -18,7 +18,7 @@ from . models import CustomUser, UserProfile
 from . utils import detectUser, send_verification_email
 
 from merchant.forms import MerchantForm
-
+from merchant.models import Merchant
 
 #############################
 # defined functions - views #
@@ -181,6 +181,7 @@ def registerCustomer(request):
 
 # View function handles the registration of a Merchant
 def registerMerchant(request):
+    
     # Handle restriction when accessing registration page while user is logged in.
     if request.user.is_authenticated:
         messages.warning(request, 'You are already logged in') # connected to 'alerts.html'
@@ -292,7 +293,13 @@ def myAccount(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_merchant)
 def merchantDashboard(request):
-    return render(request, 'accounts/merchantDashboard.html')
+    merchant  =  Merchant.objects.get(user=request.user)
+
+    context = {
+        'merchant': merchant,
+    }
+    
+    return render(request, 'accounts/merchantDashboard.html', context)
 
 # redirect to Customer Dashboard
 @login_required(login_url='login')

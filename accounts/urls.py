@@ -1,7 +1,7 @@
 ##################
 # django imports #
 ##################
-from django.urls import path
+from django.urls import path, include
 
 
 ##########################################
@@ -14,6 +14,9 @@ from . import views
 # url pattern LISTS #
 #####################
 urlpatterns = [
+
+    # Add this path for url accounts/ - it will redirect the user based on 'myAccount' functionality.
+    path('', views.myAccount),
 
     # Adding Customer login page
     path('registerCustomer/', views.registerCustomer, name='registerCustomer'),
@@ -38,4 +41,7 @@ urlpatterns = [
     path('forgot_password/', views.forgot_password, name='forgot_password'),
     path('reset_password_validate/<uidb64>/<token>/', views.reset_password_validate, name='reset_password_validate'),
     path('reset_password/', views.reset_password, name='reset_password'),
+
+    path('merchant/', include('merchant.urls')),
+    # path('customer/', include('customers.urls')),
 ]

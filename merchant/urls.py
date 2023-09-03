@@ -23,17 +23,17 @@ urlpatterns = [
     path('profile/', views.merchantProfile, name='merchantProfile'),
 
     path('menu-builder/', views.menu_builder, name='menu_builder'),
-    path('menu-builder/product-items-category/<int:pk>/', views.productitems_by_category, name='productitems_by_category'),
+    path('menu-builder/product-items-category/<int:pk>/', views.product_items_by_category, name='product_items_by_category'),
 
     # Product Category CRUD
     path('menu-builder/product-items-category/add/', views.add_product_category, name='add_product_category'),
     path('menu-builder/product-items-category/edit/<int:pk>/', views.edit_product_category, name='edit_product_category'),
     path('menu-builder/product-items-category/delete/<int:pk>/', views.delete_product_category, name='delete_product_category'),
 
-    # # FoodItem CRUD
-    # path('menu-builder/food/add/', views.add_food, name='add_food'),
-    # path('menu-builder/food/edit/<int:pk>/', views.edit_food, name='edit_food'),
-    # path('menu-builder/food/delete/<int:pk>/', views.delete_food, name='delete_food'),
+    # Product Item CRUD
+    path('menu-builder/product/add/', views.add_product_item, name='add_product_item'),
+    path('menu-builder/product/edit/<int:pk>/', views.edit_product_item, name='edit_product_item'),
+    path('menu-builder/product/delete/<int:pk>/', views.delete_product_item, name='delete_product_item'),
 
     # # Opening Hour CRUD
     # path('opening-hours/', views.opening_hours, name='opening_hours'),

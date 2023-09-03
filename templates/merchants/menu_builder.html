@@ -1,20 +1,31 @@
+<!-- This template inherits from the 'base.html' template, providing a consistent layout. -->
 {% extends 'base.html' %}
 
+<!-- Load static files such as CSS, JavaScript, or images for use in this template. -->
 {% load static %}
 
+<!-- This block defines the 'content' section of the template, which can be overridden. -->
 {% block content %}
 
+<!-- Include the content of the 'alerts.html' template to display alert messages. -->
 {% include 'includes/alerts.html' %}
+
+<!-- This template access the 'categories' data from function 'menu_builder' -->
 
 <!-- Main Section Start -->
 <div class="main-section">
+
+    <!-- Include a dynamic cover photo that adapts based on the currently logged-in user or merchant. -->
     {% include 'includes/cover_section.html' %}
+    
     <div class="page-section account-header buyer-logged-in">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+
                     <!-- Load the sidebar here -->
                     {% include 'includes/merchant_sidebar.html' %}
+
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                     <div class="user-dashboard loader-holder">
@@ -25,7 +36,7 @@
                             <h6>Menu Categories</h6>
 
                             {% if categories %}
-                            <a href="#" class="btn btn-success float-right m-1"><i class="fa fa-plus" aria-hidden="true"></i> Add Food</a>
+                            <a href="{% url 'add_product_item' %}" class="btn btn-success float-right m-1"><i class="fa fa-plus" aria-hidden="true"></i> Add Product</a>
                             <a href="{% url 'add_product_category' %}" class="btn btn-info float-right m-1"><i class="fa fa-plus" aria-hidden="true"></i> Add Category</a>
 
                             <table class="table table-hover table-borderless">
@@ -39,7 +50,7 @@
                                     <td class="text-left">
 
                                         <!-- shows the Category Name and Category Description -->
-                                        <a href="{% url 'productitems_by_category' cat.id %}"><p class="mb-0 font-weight-bold">{{ cat }}</p>
+                                        <a href="{% url 'product_items_by_category' cat.id %}"><p class="mb-0 font-weight-bold">{{ cat }}</p>
                                         <small class="text-muted">{{cat.description}}</small></a>
 
                                     </td>

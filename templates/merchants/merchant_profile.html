@@ -10,24 +10,41 @@
 <!-- Include the content of the 'alerts.html' template to display alert messages. -->
 {% include 'includes/alerts.html' %}
 
+<!-- 
+This template access the following data from context:
+
+	profile_form
+	merchant_form
+	profile
+	merchant
+
+All sourced by function: merchantProfile
+-->
 
 <!-- Main Section Start -->
 <div class="main-section">
+
+	<!-- Include a dynamic cover photo that adapts based on the currently logged-in user or merchant. -->
     {% include 'includes/cover_section.html' %}
+
     <div class="page-section account-header buyer-logged-in">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+
                     <!-- Load the sidebar here -->
                     {% include 'includes/merchant_sidebar.html' %}
+
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                     <div class="user-dashboard loader-holder">
                         <div class="user-holder">
                             <h5 class="text-uppercase">Manage Your Restaurant</h5>
+
 									<!-- My Restaurants Form Start -->
 									<form action="{% url 'merchantProfile' %}" method="POST" enctype="multipart/form-data">
                                         {% csrf_token %}
+
 										<div class="form-fields-set">
 											<ul>
 												<li>
@@ -39,11 +56,13 @@
 																		<li class="gal-img">
 																			<div class="drag-list">
 																				<div class="item-thumb">
+
 																					{% if profile.profile_picture %}
 																					<img class="thumbnail" src="{{profile.profile_picture.url}}" alt="Profile Picture">
 																					{% else %}
 																					<img class="thumbnail" src="{% static 'images/default-profile.png' %}" alt="Profile Picture">
 																					{% endif %}
+
 																				</div>
 																			</div>
 																		</li>
@@ -51,11 +70,15 @@
 																</div>
 																<div class="text-holder">
 																	<label>Update Profile Picture</label>
+
 																	<div class="upload-gallery">
 																		{{profile_form.profile_picture}}
 																	</div>
+
 																</div>
+
 																<label class="text-danger">{{ profile_form.profile_picture.errors }}</label>
+
 															</div>
 														</div>
 														<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -65,11 +88,13 @@
 																		<li class="gal-img">
 																			<div class="drag-list">
 																				<div class="item-thumb">
+
 																					{% if profile.cover_photo %}
 																					<img class="thumbnail" src="{{profile.cover_photo.url}}" alt="Cover Photo">
 																					{% else %}
 																					<img class="thumbnail" src="{% static 'images/default-cover.png' %}" alt="Cover Photo">
 																					{% endif %}
+
 																				</div>
 																			</div>
 																		</li>
@@ -77,12 +102,15 @@
 																</div>
 																<div class="text-holder">
 																	<label>Update Cover Photo</label>
+
 																	<div class="upload-gallery">
 																		{{profile_form.cover_photo}}
 																	</div>
 																	
 																</div>
+
 																<label class="text-danger">{{ profile_form.cover_photo.errors }}</label>
+
 															</div>
 														</div>
 														<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -92,7 +120,9 @@
 																		<li class="gal-img">
 																			<div class="drag-list">
 																				<div class="item-thumb">
+
 																					<img class="thumbnail" src="{{merchant.merchant_license.url}}" alt="merchant License">
+
 																				</div>
 																			</div>
 																		</li>
@@ -100,21 +130,27 @@
 																</div>
 																<div class="text-holder">
 																	<label>Update License</label>
+
 																	<div class="upload-gallery">
 																		{{merchant_form.merchant_license}}
 																	</div>
 																	
 																</div>
+
 																<label class="text-danger">{{ merchant_form.merchant_license.errors }}</label>
+
 															</div>
 														</div>
 														<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
 															<div class="field-holder">
 																<label>Restaurant name *</label>
 																{{merchant_form.merchant_name}}
 															</div>
+
 														</div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
 															<div class="field-holder">
 																<label>Address *</label>
 																{{profile_form.address}}

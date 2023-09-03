@@ -45,7 +45,7 @@ urlpatterns = [
     path('', views.home, name='home'),
 
     # When user go to 'accounts/' path. they have access to 'accounts app - urls.py'
-    path('accounts/', include('accounts.urls'))
+    path('', include('accounts.urls'))
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # Above code is to append URL patterns for serving media files to your existing urlpatterns list

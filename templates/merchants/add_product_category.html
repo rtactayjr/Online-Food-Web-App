@@ -1,19 +1,31 @@
+<!-- This template inherits from the 'base.html' template, providing a consistent layout. -->
 {% extends 'base.html' %}
 
+<!-- Load static files such as CSS, JavaScript, or images for use in this template. -->
 {% load static %}
 
+<!-- This block defines the 'content' section of the template, which can be overridden. -->
 {% block content %}
+
+<!-- Include the content of the 'alerts.html' template to display alert messages. -->
 {% include 'includes/alerts.html' %}
+
+<!-- This template access the 'form' data from context in function 'add_product_category' -->
 
 <!-- Main Section Start -->
 <div class="main-section">
+
+    <!-- Include a dynamic cover photo that adapts based on the currently logged-in user or merchant. -->
     {% include 'includes/cover_section.html' %}
+
     <div class="page-section account-header buyer-logged-in">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+
                     <!-- Load the sidebar here -->
                     {% include 'includes/merchant_sidebar.html' %}
+
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                     <div class="user-dashboard loader-holder">
@@ -26,6 +38,7 @@
                             
                             <form action="{% url 'add_product_category' %}" method="POST">
                                 {% csrf_token %}
+
                                 <div class="form-fields-set">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12">

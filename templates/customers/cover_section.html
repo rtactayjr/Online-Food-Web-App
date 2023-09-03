@@ -1,4 +1,9 @@
+
+<!-- Load static files such as CSS, JavaScript, or images for use in this template. -->
 {% load static %}
+
+<!-- user_profile and user are from parent template 'registerMerchant_html'-->
+
 <div class="page-section restaurant-detail-image-section" 
 style=" background: url({% if user_profile.cover_photo %}{{ user_profile.cover_photo.url }} {% else %} 
 {% static 'images/default-cover.png' %} {% endif %} ) no-repeat scroll 0 0 / cover;">

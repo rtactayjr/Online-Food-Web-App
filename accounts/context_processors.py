@@ -39,6 +39,15 @@ from merchant.models import Merchant
 #############################
 
 def get_merchant(request):
+    """
+    Get the merchant associated with the logged-in user.
+    
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        dict: A dictionary containing the 'merchant' object or None if not found.
+    """
     try:
         merchant = Merchant.objects.get(user=request.user)
     except:
@@ -47,6 +56,15 @@ def get_merchant(request):
 
 
 def get_user_profile(request):
+    """
+    Get the user profile associated with the logged-in user.
+    
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        dict: A dictionary containing the 'user_profile' object or None if not found.
+    """
     try:
         user_profile = UserProfile.objects.get(user=request.user)
     except:
@@ -55,8 +73,26 @@ def get_user_profile(request):
 
 
 def get_google_api(request):
+    """
+    Get the Google API key from Django settings.
+    
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        dict: A dictionary containing the 'GOOGLE_API_KEY'.
+    """
     return {'GOOGLE_API_KEY': settings.GOOGLE_API_KEY}
 
 
 def get_paypal_client_id(request):
+    """
+    Get the PayPal client ID from Django settings.
+    
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        dict: A dictionary containing the 'PAYPAL_CLIENT_ID'.
+    """
     return {'PAYPAL_CLIENT_ID': settings.PAYPAL_CLIENT_ID}

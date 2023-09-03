@@ -10,6 +10,7 @@ from django.urls import path, include
 from . import views
 from accounts import views as AccountViews
 
+
 #####################
 # url pattern LISTS #
 #####################
@@ -21,14 +22,13 @@ urlpatterns = [
     # URL for the Merchant Profile view
     path('profile/', views.merchantProfile, name='merchantProfile'),
 
+    path('menu-builder/', views.menu_builder, name='menu_builder'),
+    path('menu-builder/product-items-category/<int:pk>/', views.productitems_by_category, name='productitems_by_category'),
 
-    # path('menu-builder/', views.menu_builder, name='menu_builder'),
-    # path('menu-builder/category/<int:pk>/', views.fooditems_by_category, name='fooditems_by_category'),
-
-    # # Category CRUD
-    # path('menu-builder/category/add/', views.add_category, name='add_category'),
-    # path('menu-builder/category/edit/<int:pk>/', views.edit_category, name='edit_category'),
-    # path('menu-builder/category/delete/<int:pk>/', views.delete_category, name='delete_category'),
+    # Product Category CRUD
+    path('menu-builder/product-items-category/add/', views.add_product_category, name='add_product_category'),
+    path('menu-builder/product-items-category/edit/<int:pk>/', views.edit_product_category, name='edit_product_category'),
+    path('menu-builder/product-items-category/delete/<int:pk>/', views.delete_product_category, name='delete_product_category'),
 
     # # FoodItem CRUD
     # path('menu-builder/food/add/', views.add_food, name='add_food'),

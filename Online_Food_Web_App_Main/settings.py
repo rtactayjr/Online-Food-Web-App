@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accounts',
     'merchant',
     'menuitems',
+    'marketplace',
 ]
 
 MIDDLEWARE = [

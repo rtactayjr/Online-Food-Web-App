@@ -242,60 +242,106 @@ def delete_product_category(request, pk=None):
 @login_required(login_url='login')
 @user_passes_test(check_role_merchant)
 def add_product_item(request):
+
+    # Check if the request method is POST (form submission)
     if request.method == 'POST':
+
+        # Create a form instance with POST data and uploaded files
         form = ProductItemForm(request.POST, request.FILES)
+
+        # Check if the submitted form data is valid
         if form.is_valid():
+            # Get the cleaned product title from the form
             product_title = form.cleaned_data['product_title']
+            # Create a product instance but don't save it to the database yet
             product = form.save(commit=False)
+            # Assign the logged-in merchant to the product
             product.merchant = get_merchant(request)
+            # Generate a slug for the product based on its title
             product.slug = slugify(product_title)
+            # Save the product to the database
             form.save()
+            # Display a success message
             messages.success(request, 'Food Item added successfully!')
+            # Redirect to the page displaying products of the same category
             return redirect('product_items_by_category', product.category.id)
         else:
+            # Print form errors for debugging purposes
             print(form.errors)
     else:
+        # If the request method is not POST, create an empty form
         form = ProductItemForm()
+
+        # Filter product category options based on the logged-in merchant
         form.fields['category'].queryset = ProductCategory.objects.filter(merchant=get_merchant(request))
         
     context = {
         'form': form,
     }
+    # Render the product item form page with the context
     return render(request, 'merchants/add_product_item.html', context)
+
 
 
 
 @login_required(login_url='login')
 @user_passes_test(check_role_merchant)
 def edit_product_item(request, pk=None):
+
+    # Get the product to be edited based on the primary key (pk)
     product = get_object_or_404(ProductItem, pk=pk)
+
     if request.method == 'POST':
+        # Create a form instance with POST data and uploaded files, pre-filled with the existing product data
         form = ProductItemForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
+            # Get the cleaned product title from the form
             product_title = form.cleaned_data['product_title']
+            # Create a product instance but don't save it to the database yet
             product = form.save(commit=False)
+            # Assign the logged-in merchant to the product
             product.merchant = get_merchant(request)
+            # Generate a slug for the product based on its title
             product.slug = slugify(product_title)
+            # Save the updated product to the database
             form.save()
+            # Display a success message
             messages.success(request, 'Food Item updated successfully!')
+            # Redirect to the page displaying products of the same category
             return redirect('product_items_by_category', product.category.id)
         else:
+            # Print form errors for debugging purposes
             print(form.errors)
 
     else:
+        # If the request method is not POST, create a form pre-filled with the existing product data
         form = ProductItemForm(instance=product)
+
+        # Filter product category options based on the logged-in merchant
         form.fields['category'].queryset = ProductCategory.objects.filter(merchant=get_merchant(request))
+
     context = {
         'form': form,
         'product': product,
     }
+
+    # Render the product item edit page with the context
     return render(request, 'merchants/edit_product_item.html', context)
+
 
 
 @login_required(login_url='login')
 @user_passes_test(check_role_merchant)
 def delete_product_item(request, pk=None):
+
+    # Get the product to be deleted based on the primary key (pk)
     product = get_object_or_404(ProductItem, pk=pk)
+
+    # Delete the product from the database
     product.delete()
+
+    # Display a success message
     messages.success(request, 'Food Item has been deleted successfully!')
+    
+    # Redirect to the page displaying products of the same category
     return redirect('product_items_by_category', product.category.id)

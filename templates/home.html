@@ -118,48 +118,25 @@
 
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
 					<div class="company-logo">
+
 						<ul>
+							{% for merchant in merchants %}
 							<li class="has-border">
 								<figure>
-									<a href="#"><img src="{% static  'extra-images/listing-logo18.png'%}" class="attachment-full size-full wp-post-image" alt=""></a>
+									{% if merchant.user_profile.profile_picture %}
+									<a href="">
+										<img src="{{ merchant.user_profile.profile_picture.url }}" height="125" class="attachment-full size-full wp-post-image" alt="">
+									</a>
+									{% else %}
+									<a href="">
+										<img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt="">
+									</a>
+									{% endif %}
 								</figure>
 							</li>
-							<li class="has-border">
-								<figure>
-									<a href="#"><img src="{% static 'extra-images/fb-restaurant-02.jpg' %}" class="attachment-full size-full wp-post-image" alt=""></a>
-								</figure>
-							</li>
-							<li class="has-border">
-								<figure>
-									<a href="#"><img src="{% static 'extra-images/fb-restaurant-04.jpg' %}" class="attachment-full size-full wp-post-image" alt=""></a>
-								</figure>
-							</li>
-							<li class="has-border">
-								<figure>
-									<a href="#"><img src="{% static 'extra-images/fb-restaurant-06.jpg' %}" class="attachment-full size-full wp-post-image" alt=""></a>
-								</figure>
-							</li>
-							<li class="has-border">
-								<figure>
-									<a href="#"><img src="{% static 'extra-images/xlisting-logo03.png.pagespeed.ic_.aT-o9LinEJ.png' %}" class="attachment-full size-full wp-post-image" alt=""></a>
-								</figure>
-							</li>
-							<li class="has-border">
-								<figure>
-									<a href="#"><img src="{% static 'extra-images/listing-logo09.png' %}" class="attachment-full size-full wp-post-image" alt=""></a>
-								</figure>
-							</li>
-							<li class="has-border">
-								<figure>
-									<a href="#"><img src="{% static 'extra-images/listing-logo18.png' %}" class="attachment-full size-full wp-post-image" alt=""></a>
-								</figure>
-							</li>
-							<li class="has-border">
-								<figure>
-									<a href="#"><img src="{% static 'extra-images/fb-restaurant-09.png' %}" class="attachment-full size-full wp-post-image" alt=""></a>
-								</figure>
-							</li>
+							{% endfor %}
 						</ul>
+
 					</div>
 				</div>
 			</div>

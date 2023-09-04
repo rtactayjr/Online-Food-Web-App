@@ -22,8 +22,7 @@ class Merchant(models.Model):
     user = models.OneToOneField(CustomUser, related_name='customuser', on_delete=models.CASCADE)
     user_profile = models.OneToOneField(UserProfile, related_name='userprofile', on_delete=models.CASCADE)
     merchant_name = models.CharField(max_length=50)
-
-    # merchant_slug = models.SlugField(max_length=100, unique=True)
+    merchant_slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
     merchant_license = models.ImageField(upload_to='merchant/license', null=True)
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

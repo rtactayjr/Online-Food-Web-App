@@ -111,13 +111,13 @@
                                                 <div class="price-holder">
                                                     <span class="price">${{ product.price }}</span>
 
-                                                    <a href="#" class="decrease_cart" data-id="{{ product.id }}" data-url="" style="margin-right: 28px;">
+                                                    <a href="#" class="decrease_cart" data-id="{{ product.id }}" data-url="{% url 'decrease_cart' product.id %}" style="margin-right: 28px;">
                                                         <i class="icon-minus text-color"></i>
                                                     </a>
 
                                                     <label id="qty-{{product.id}}">0</label>
 
-                                                    <a href="#" class="add_to_cart" data-id="{{ product.id }}" data-url="">
+                                                    <a href="" class="increase_cart" data-id="{{ product.id }}" data-url="{% url 'increase_cart' product.id %}">
                                                         <i class="icon-plus4 text-color"></i>
                                                     </a>
                                                 </div>
@@ -129,13 +129,9 @@
                                         
                                     </div>
 
-                                    <!-- {% for item in cart_items %}
-
-                                    <span id="qty-{{item.productitem.id}}" class="item_qty d-none" data-qty="{{ item.quantity }}">{{ item.quantity }}</span>
-
-                                    
-
-                                    {% endfor %} -->
+                                    {% for item in cart_items %}
+                                        <span id="qty-{{item.product_item.id}}" class="item_qty d-none" data-qty="{{ item.quantity }}">{{ item.quantity }}</span>
+                                    {% endfor %}
                                 </div>
                             </div>
                             

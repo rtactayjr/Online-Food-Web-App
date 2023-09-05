@@ -78,35 +78,40 @@ $(document).ready(function(){
     // increase cart item
     $('.increase_cart').on('click', function(e){
         e.preventDefault();
-        
+
         product_id = $(this).attr('data-id');
         url = $(this).attr('data-url');
         
+        data = {
+            product_id: product_id,
+        }
+    
        
         $.ajax({
             type: 'GET',
             url: url,
+            data: data,
             success: function(response){
                 console.log(response)
-                if(response.status == 'login_required'){
-                    swal(response.message, '', 'info').then(function(){
-                        window.location = '/login';
-                    })
-                }else if(response.status == 'Failed'){
-                    swal(response.message, '', 'error')
-                }else{
-                    $('#cart_counter').html(response.cart_counter['cart_count']);
-                    $('#qty-'+product_id).html(response.qty);
+        //         if(response.status == 'login_required'){
+        //             swal(response.message, '', 'info').then(function(){
+        //                 window.location = '/login';
+        //             })
+        //         }else if(response.status == 'Failed'){
+        //             swal(response.message, '', 'error')
+        //         }else{
+        //             $('#cart_counter').html(response.cart_counter['cart_count']);
+        //             $('#qty-'+product_id).html(response.qty);
 
-                    // subtotal, tax and grand total
-                    applyCartAmounts(
-                        response.cart_amount['subtotal'],
-                        response.cart_amount['tax_dict'],
-                        response.cart_amount['grand_total']
-                    )
-                }
-            }
-        })
+        //             // subtotal, tax and grand total
+        //             applyCartAmounts(
+        //                 response.cart_amount['subtotal'],
+        //                 response.cart_amount['tax_dict'],
+        //                 response.cart_amount['grand_total']
+        //             )
+        //         }
+             }
+         })
     })
 
 

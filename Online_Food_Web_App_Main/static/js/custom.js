@@ -75,11 +75,11 @@ function onPlaceChanged (){
 
 
 $(document).ready(function(){
-    // add to cart
-    $('.add_to_cart').on('click', function(e){
+    // increase cart item
+    $('.increase_cart').on('click', function(e){
         e.preventDefault();
         
-        food_id = $(this).attr('data-id');
+        product_id = $(this).attr('data-id');
         url = $(this).attr('data-url');
         
        
@@ -96,7 +96,7 @@ $(document).ready(function(){
                     swal(response.message, '', 'error')
                 }else{
                     $('#cart_counter').html(response.cart_counter['cart_count']);
-                    $('#qty-'+food_id).html(response.qty);
+                    $('#qty-'+product_id).html(response.qty);
 
                     // subtotal, tax and grand total
                     applyCartAmounts(
@@ -121,7 +121,7 @@ $(document).ready(function(){
     $('.decrease_cart').on('click', function(e){
         e.preventDefault();
         
-        food_id = $(this).attr('data-id');
+        product_id = $(this).attr('data-id');
         url = $(this).attr('data-url');
         cart_id = $(this).attr('id');
         
@@ -139,7 +139,7 @@ $(document).ready(function(){
                     swal(response.message, '', 'error')
                 }else{
                     $('#cart_counter').html(response.cart_counter['cart_count']);
-                    $('#qty-'+food_id).html(response.qty);
+                    $('#qty-'+product_id).html(response.qty);
 
                     applyCartAmounts(
                         response.cart_amount['subtotal'],
@@ -159,7 +159,7 @@ $(document).ready(function(){
 
 
     // DELETE CART ITEM
-    $('.delete_cart').on('click', function(e){
+    $('.remove_cart').on('click', function(e){
         e.preventDefault();
         
         cart_id = $(this).attr('data-id');

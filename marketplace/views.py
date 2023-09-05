@@ -44,3 +44,13 @@ def merchant_detail(request, merchant_slug):
         # 'current_opening_hours': current_opening_hours,
     }
     return render(request, 'marketplace/merchant_detail.html', context)
+
+
+def increase_cart(request, product_id):
+    pass
+
+def decrease_cart(request, product_id):
+    pass
+
+def remove_cart(request, product_id):
+    pass

@@ -99,6 +99,7 @@
                                             <span>{{ category.description }}</span>
                                         </div>
                                         <ul>
+
                                             {% for product in category.productitems.all %}
                                             <li>
                                                 <div class="image-holder"> <img src="{{ product.image.url }}" alt=""></div>
@@ -106,13 +107,19 @@
                                                     <h6>{{ product }}</h6>
                                                     <span>{{ product.description }}</span>
                                                 </div>
+
                                                 <div class="price-holder">
                                                     <span class="price">${{ product.price }}</span>
 
-                                                    <a href="#" class="decrease_cart" data-id="{{ product.id }}" data-url="" style="margin-right: 28px;"><i class="icon-minus text-color"></i></a>
+                                                    <a href="#" class="decrease_cart" data-id="{{ product.id }}" data-url="" style="margin-right: 28px;">
+                                                        <i class="icon-minus text-color"></i>
+                                                    </a>
+
                                                     <label id="qty-{{product.id}}">0</label>
-                                                    <a href="#" class="add_to_cart" data-id="{{ product.id }}" data-url=""><i class="icon-plus4 text-color"></i></a>
-                                                    
+
+                                                    <a href="#" class="add_to_cart" data-id="{{ product.id }}" data-url="">
+                                                        <i class="icon-plus4 text-color"></i>
+                                                    </a>
                                                 </div>
                                             </li>
                                             {% endfor %}

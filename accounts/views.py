@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.tokens import default_token_generator
 from django.core.exceptions import PermissionDenied
 from django.utils.http import urlsafe_base64_decode
+from django.template.defaultfilters import slugify
+
 
 ##########################################
 #  import modules from current directory #
@@ -257,6 +259,9 @@ def registerMerchant(request):
             # Create a new merchant instance and associate it with the user
             merchant = merchant_form.save(commit=False)
             merchant.user = user
+
+            merchant_name = merchant_form.cleaned_data['merchant_name']
+            merchant.merchant_slug = slugify(merchant_name)+'-'+str(user.id)
 
             # Get the user's profile and associate it with the merchant
             user_profile = UserProfile.objects.get(user=user)

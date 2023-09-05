@@ -1,12 +1,14 @@
 ##################
 # django imports #
 ##################
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.db.models import Prefetch
 
 ##########################################
 #  import modules from current directory #
 ##########################################
 from merchant.models import Merchant
+from menuitems.models import ProductCategory, ProductItem
 
 #############################
 # defined functions - views #
@@ -22,3 +24,23 @@ def marketplace(request):
     }
 
     return render(request, 'marketplace/product_listings.html', context)
+
+
+def merchant_detail(request, merchant_slug):
+    merchant = get_object_or_404(Merchant, merchant_slug=merchant_slug)
+
+    categories = ProductCategory.objects.filter(merchant=merchant).prefetch_related(
+                    Prefetch(
+                        'productitems',
+                        queryset = ProductItem.objects.filter(is_available=True)
+                    )
+                )
+
+    context = {
+        'merchant': merchant,
+        'categories': categories,
+        # 'cart_items': cart_items,
+        # 'opening_hours': opening_hours,
+        # 'current_opening_hours': current_opening_hours,
+    }
+    return render(request, 'marketplace/merchant_detail.html', context)

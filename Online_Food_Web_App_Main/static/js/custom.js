@@ -92,7 +92,10 @@ $(document).ready(function(){
             url: url,
             data: data,
             success: function(response){
-                console.log(response)
+                console.log(response.cart_counter['cart_count'])
+                $('#cart_counter').html(response.cart_counter['cart_count'])
+                $('#qty-'+product_id).html(response.qty);
+
         //         if(response.status == 'login_required'){
         //             swal(response.message, '', 'info').then(function(){
         //                 window.location = '/login';

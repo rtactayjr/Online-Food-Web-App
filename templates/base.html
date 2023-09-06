@@ -35,8 +35,12 @@
 	<script src="{% static 'js/modernizr.js' %}"></script>
 	<script src="{% static  'js/bootstrap.js' %}"></script>
 
-	<!-- ---Script to load in HTML head--- -->
+
+	{% if '/profile/' in request.GET %}
 	<script src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutoComplete" async defer></script>
+	{% endif %}
+
+	<!-- ---Script to load in HTML head--- -->
 	<script src="{% static  'js/custom.js'%}"></script>
 	<style>
 		body, .main-section p, .mce-content-body p{

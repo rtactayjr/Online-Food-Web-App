@@ -103,7 +103,6 @@ def decrease_cart(request, product_id):
                 return JsonResponse({'status': 'Failed', 'message': 'This food does not exist!'})
         else:
             return JsonResponse({'status': 'Failed', 'message': 'Invalid request!'})
-        
     else:
         return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})
     

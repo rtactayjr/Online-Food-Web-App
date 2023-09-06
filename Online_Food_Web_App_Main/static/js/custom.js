@@ -75,7 +75,8 @@ function onPlaceChanged (){
 
 
 $(document).ready(function(){
-    // increase cart item
+
+    // Increase cart item
     $('.increase_cart').on('click', function(e){
         e.preventDefault();
 
@@ -87,8 +88,12 @@ $(document).ready(function(){
             url: url,
             success: function(response){
                 console.log(response)
-                if(response.status == 'Failed'){
-                    console.log('raise the error message')
+                if(response.status == 'login_required'){
+                    swal(response.message, '', 'info').then(function(){
+                        window.location = '/login';
+                    })
+                }else if(response.status == 'Failed'){
+                    swal(response.message, '', 'error')
                 }else{
                     $('#cart_counter').html(response.cart_counter['cart_count']);
                     $('#qty-'+product_id).html(response.qty);
@@ -98,14 +103,14 @@ $(document).ready(function(){
     })
 
 
-    // place the cart item quantity on load
+    // Place the cart item quantity on load
     $('.item_qty').each(function(){
         var the_id = $(this).attr('id')
         var qty = $(this).attr('data-qty')
         $('#'+the_id).html(qty)
     })
 
-    // decrease cart
+    // Decrease cart
     $('.decrease_cart').on('click', function(e){
         e.preventDefault();
 
@@ -117,16 +122,19 @@ $(document).ready(function(){
             url: url,
             success: function(response){
                 console.log(response)
-
-                if(response.status == 'Failed'){
-                    console.log(response)
+                if(response.status == 'login_required'){
+                    swal(response.message, '', 'info').then(function(){
+                        window.location = '/login';
+                    })
+                }else if(response.status == 'Failed'){
+                    swal(response.message, '', 'error')
                 }else{
                     $('#cart_counter').html(response.cart_counter['cart_count']);
                     $('#qty-'+product_id).html(response.qty);
-                }
                     
-             }
-         })
+                } 
+            }
+        })
     })
 
 

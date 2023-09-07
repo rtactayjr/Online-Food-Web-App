@@ -49,8 +49,11 @@ urlpatterns = [
 
     path('marketplace/', include('marketplace.urls')),
 
-    # CART
+    # Cart
     path('cart/', MarketplaceViews.cart, name='cart'),
+
+    # SEARCH
+    path('search/', MarketplaceViews.search, name='search'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # Above code is to append URL patterns for serving media files to your existing urlpatterns list

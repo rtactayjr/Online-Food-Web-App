@@ -4,6 +4,8 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Prefetch
+from django.db.models import Q
+
 from django.contrib.auth.decorators import login_required
 
 ##########################################
@@ -187,3 +189,26 @@ def remove_cart(request, cart_id):
                 return JsonResponse({'status': 'Failed', 'message': 'Cart Item does not exist!'})
         else:
             return JsonResponse({'status': 'Failed', 'message': 'Invalid request!'})
+        
+
+def search(request):
+
+    address = request.GET['address']
+    latitude = request.GET['lat']
+    longitude = request.GET['lng']
+    radius = request.GET['radius']
+    keyword = request.GET['keyword']
+    
+    get_merchants_by_product_item = ProductItem.objects.filter(product_title__icontains=keyword, is_available=True).values_list('merchant', flat=True)
+
+    merchants = Merchant.objects.filter(Q(id__in=get_merchants_by_product_item) | Q(merchant_name__icontains=keyword, is_approved=True, user__is_active=True))
+
+    # merchants = Merchant.objects.filter(merchant_name__icontains=keyword, is_approved=True, user__is_active=True)
+    merchant_count = merchants.count()
+
+    context = {
+        'merchants': merchants,
+        'merchant_count': merchant_count
+    }
+
+    return render(request, 'marketplace/listings.html', context)

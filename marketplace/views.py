@@ -80,17 +80,36 @@ def increase_cart(request, product_id):
                     # Increase the cart quantity
                     chkCart.quantity += 1
                     chkCart.save()
-                    return JsonResponse({'status': 'Success', 'message': 'Increased the cart quantity', 'cart_counter': get_cart_counter(request), 'qty': chkCart.quantity, 'cart_amount': get_cart_amounts(request)})
+                    return JsonResponse({
+                        'status': 'Success', 
+                        'message': 'Increased the cart quantity', 
+                        'cart_counter': get_cart_counter(request), 
+                        'qty': chkCart.quantity, 
+                        'cart_amount': get_cart_amounts(request)})
                 except:
-                    chkCart = Cart.objects.create(user=request.user, product_item=product_item, quantity=1)
-                    return JsonResponse({'status': 'Success', 'message': 'Added the food to the cart', 'cart_counter': get_cart_counter(request), 'qty': chkCart.quantity, 'cart_amount': get_cart_amounts(request)})
+                    chkCart = Cart.objects.create(
+                                                user=request.user, 
+                                                product_item=product_item, 
+                                                quantity=1)
+                    
+                    return JsonResponse({
+                        'status': 'Success', 
+                        'message': 'Added the food to the cart', 
+                        'cart_counter': get_cart_counter(request), 
+                        'qty': chkCart.quantity, 
+                        'cart_amount': get_cart_amounts(request)})
             except:
-                return JsonResponse({'status': 'Failed', 'message': 'This food does not exist!'})
+                return JsonResponse({
+                    'status': 'Failed', 
+                    'message': 'This food does not exist!'})
         else:
-            return JsonResponse({'status': 'Failed', 'message': 'Invalid request!'})
-        
+            return JsonResponse({
+                'status': 'Failed', 
+                'message': 'Invalid request!'})
     else:
-        return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})
+        return JsonResponse({
+            'status': 'login_required', 
+            'message': 'Please login to continue'})
 
 
 def decrease_cart(request, product_id):
@@ -159,7 +178,11 @@ def remove_cart(request, cart_id):
                 cart_item = Cart.objects.get(user=request.user, id=cart_id)
                 if cart_item:
                     cart_item.delete()
-                    return JsonResponse({'status': 'Success', 'message': 'Cart item has been deleted!', 'cart_counter': get_cart_counter(request), 'cart_amount': get_cart_amounts(request)})
+                    return JsonResponse({
+                        'status': 'Success', 
+                        'message': 'Cart item has been deleted!', 
+                        'cart_counter': get_cart_counter(request), 
+                        'cart_amount': get_cart_amounts(request)})
             except:
                 return JsonResponse({'status': 'Failed', 'message': 'Cart Item does not exist!'})
         else:

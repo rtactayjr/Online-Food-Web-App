@@ -97,6 +97,13 @@ $(document).ready(function(){
                 }else{
                     $('#cart_counter').html(response.cart_counter['cart_count']);
                     $('#qty-'+product_id).html(response.qty);
+
+                    // subtotal, tax and grand total
+                    applyCartAmounts(
+                        response.cart_amount['subtotal'],
+                        response.cart_amount['tax_dict'],
+                        response.cart_amount['grand_total']
+                    )
                 }
              }
          })
@@ -132,6 +139,12 @@ $(document).ready(function(){
                     $('#cart_counter').html(response.cart_counter['cart_count']);
                     $('#qty-'+product_id).html(response.qty);
                     
+                    applyCartAmounts(
+                        response.cart_amount['subtotal'],
+                        response.cart_amount['tax_dict'],
+                        response.cart_amount['grand_total']
+                    )
+
                     if(window.location.pathname == '/cart/'){
                         removeCartItem(response.qty, cart_id);
                         checkEmptyCart();
@@ -161,6 +174,12 @@ $(document).ready(function(){
                     $('#cart_counter').html(response.cart_counter['cart_count']);
                     swal(response.status, response.message, "success")
                     
+                    applyCartAmounts(
+                        response.cart_amount['subtotal'],
+                        response.cart_amount['tax_dict'],
+                        response.cart_amount['grand_total']
+                    )
+
                     removeCartItem(0, cart_id);
                     checkEmptyCart();
                 } 

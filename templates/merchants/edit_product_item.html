@@ -83,6 +83,8 @@
                                 {% endfor %}
 
                                 <button type="submit" class="btn btn-info"><i class="fa fa-check" aria-hidden="true"></i> Update</button>
+
+                                <!-- the product.id is the primary key for each product required from urls.py -->
                                 <a href="{% url 'delete_product_item' product.id %}" onclick="return confirm('Are you sure you want to delete this food?')" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                             </form>
 

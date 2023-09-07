@@ -23,6 +23,6 @@ urlpatterns = [
     # DECREASE CART
     path('decrease_cart/<int:product_id>/', views.decrease_cart, name='decrease_cart'),
     # DELETE CART ITEM
-    path('remove_cart/<int:product_id>/', views.remove_cart, name='remove_cart'),
+    path('remove_cart/<int:cart_id>/', views.remove_cart, name='remove_cart'),
     
 ]

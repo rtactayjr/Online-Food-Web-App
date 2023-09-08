@@ -25,8 +25,8 @@
                             <ul>
                                 <li class="location-has-children choose-location">
                                     <form action="#">
-                                        <input type="text" value="" name="location" placeholder="Enter your delivery location" autocomplete="off">
-                                        <span id="foodbakery_radius_location_open" class="foodbakery-radius-location"><i class="icon-target5"></i></span>
+                                        <input type="text" value="" name="location" id="location" placeholder="Your current location" autocomplete="off">
+                                        <span id="foodbakery_radius_location_open" class="foodbakery-radius-location" onclick="getLocation()"><i class="icon-target5"></i></span>
                                     </form>
                                 </li>
                             </ul>
@@ -74,6 +74,7 @@
         }
         
         function getLocation() {
+
             if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
             } else { 

@@ -5,6 +5,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.template.defaultfilters import slugify
+from django.http import HttpResponse, JsonResponse
+
+from django.db import IntegrityError
 
 
 ##########################################
@@ -347,6 +350,7 @@ def delete_product_item(request, pk=None):
     return redirect('product_items_by_category', product.category.id)
 
 
+
 def operating_hours(request):
     operating_hours = OperatingHour.objects.filter(merchant=get_merchant(request))
     form = OperatingHourForm()
@@ -358,7 +362,32 @@ def operating_hours(request):
     return render(request, 'merchants/operating_hours.html', context)
 
 def add_operating_hours(request):
-    pass
+    # handle the data and save them inside the database
+    if request.user.is_authenticated:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'POST':
+            day = request.POST.get('day')
+            from_hour = request.POST.get('from_hour')
+            to_hour = request.POST.get('to_hour')
+            is_closed = request.POST.get('is_closed')
+            
+            try:
+                hour = OperatingHour.objects.create(merchant=get_merchant(request), day=day, from_hour=from_hour, to_hour=to_hour, is_closed=is_closed)
+                if hour:
+                    day = OperatingHour.objects.get(id=hour.id)
+                    if day.is_closed:
+                        response = {'status': 'success', 'id': hour.id, 'day': day.get_day_display(), 'is_closed': 'Closed'}
+                    else:
+                        response = {'status': 'success', 'id': hour.id, 'day': day.get_day_display(), 'from_hour': hour.from_hour, 'to_hour': hour.to_hour}
+                return JsonResponse(response)
+            except IntegrityError as e:
+                response = {'status': 'failed', 'message': from_hour+'-'+to_hour+' already exists for this day!'}
+                return JsonResponse(response)
+        else:
+            HttpResponse('Invalid request')
 
-def remove_operating_hours(request):
-    pass
+def remove_operating_hours(request, pk=None):
+    if request.user.is_authenticated:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            hour = get_object_or_404(OperatingHour, pk=pk)
+            hour.delete()
+            return JsonResponse({'status': 'success', 'id': pk})

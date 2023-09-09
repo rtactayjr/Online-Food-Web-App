@@ -6,7 +6,7 @@ from django.contrib import admin
 ##########################################
 #  import modules from current directory #
 ##########################################
-from merchant.models import Merchant
+from merchant.models import Merchant, OperatingHour
 
 #####################
 # create class here #
@@ -23,5 +23,9 @@ class MerchantAdmin(admin.ModelAdmin):
     # Allow editing of the 'is_approved' field directly in the list view
     list_editable = ('is_approved',)
 
+class OperatingHourAdmin(admin.ModelAdmin):
+    list_display = ('merchant', 'day', 'from_hour', 'to_hour')
+
 # Register the Merchant model with the custom admin class
 admin.site.register(Merchant, MerchantAdmin)
+admin.site.register(OperatingHour, OperatingHourAdmin)

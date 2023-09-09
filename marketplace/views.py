@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
 from django.contrib.gis.db.models.functions import Distance
-
+from datetime import date, datetime
 
 ##########################################
 #  import modules from current directory #
@@ -19,7 +19,7 @@ from django.contrib.gis.db.models.functions import Distance
 from . models import Cart
 from . context_processors import get_cart_counter, get_cart_amounts
 
-from merchant.models import Merchant
+from merchant.models import Merchant, OperatingHour
 from menuitems.models import ProductCategory, ProductItem
 
 #############################
@@ -54,6 +54,14 @@ def merchant_detail(request, merchant_slug):
         )
     )
 
+    operating_hours = OperatingHour.objects.filter(merchant=merchant).order_by('day', 'from_hour')
+
+    # Check current day's opening hours.
+    today_date = date.today()
+    today = today_date.isoweekday()
+
+    current_operating_hours = OperatingHour.objects.filter(merchant=merchant, day=today)
+    
     # Check if the user is authenticated, and retrieve their cart items if so
     if request.user.is_authenticated:
         cart_items = Cart.objects.filter(user=request.user)
@@ -65,10 +73,8 @@ def merchant_detail(request, merchant_slug):
         'merchant': merchant,
         'categories': categories,
         'cart_items': cart_items,
-
-        # You can uncomment and add more context data if needed
-        # 'opening_hours': opening_hours,
-        # 'current_opening_hours': current_opening_hours,
+        'operating_hours': operating_hours,
+        'current_operating_hours': current_operating_hours,
     }
 
     # Render the 'merchant_detail.html' template with the provided context

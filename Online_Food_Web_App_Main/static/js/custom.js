@@ -1,5 +1,3 @@
-// id_address is the ID of the input field for Address
-
 let autocomplete;
 
 function initAutoComplete(){
@@ -271,7 +269,7 @@ $(document).ready(function(){
             swal('Please fill all fields', '', 'info')
         }
     });
-
+ 
     // REMOVE OPENING HOUR
     $(document).on('click', '.remove_hour', function(e){
         e.preventDefault();
@@ -288,5 +286,5 @@ $(document).ready(function(){
         })
     })
 
-   // document ready close 
+
 });

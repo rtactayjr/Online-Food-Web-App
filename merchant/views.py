@@ -10,8 +10,8 @@ from django.template.defaultfilters import slugify
 ##########################################
 #  import modules from current directory #
 ##########################################
-from . forms import MerchantForm
-from . models import Merchant
+from . forms import MerchantForm, OperatingHourForm
+from . models import Merchant, OperatingHour
 
 from accounts.forms import UserProfileForm
 from accounts.models import UserProfile
@@ -345,3 +345,20 @@ def delete_product_item(request, pk=None):
     
     # Redirect to the page displaying products of the same category
     return redirect('product_items_by_category', product.category.id)
+
+
+def operating_hours(request):
+    operating_hours = OperatingHour.objects.filter(merchant=get_merchant(request))
+    form = OperatingHourForm()
+
+    context = {
+        'form': form,
+        'operating_hours': operating_hours,
+    }
+    return render(request, 'merchants/operating_hours.html', context)
+
+def add_operating_hours(request):
+    pass
+
+def remove_operating_hours(request):
+    pass

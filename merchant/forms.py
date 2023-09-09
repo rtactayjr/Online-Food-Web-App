@@ -6,7 +6,7 @@ from django import forms
 ##########################################
 #  import modules from current directory #
 ##########################################
-from . models import Merchant
+from . models import Merchant, OperatingHour
 from accounts.validators import allow_only_images_validator
 
 #####################
@@ -23,3 +23,8 @@ class MerchantForm(forms.ModelForm):
 
         # Specify the fields to include in the form
         fields = ['merchant_name', 'merchant_license']
+
+class OperatingHourForm(forms.ModelForm):
+    class Meta:
+        model = OperatingHour
+        fields = ['day', 'from_hour', 'to_hour', 'is_closed']

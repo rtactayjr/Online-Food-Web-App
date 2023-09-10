@@ -55,8 +55,8 @@ urlpatterns = [
     # SEARCH
     path('search/', MarketplaceViews.search, name='search'),
 
-    # # CHECKOUT
-    # path('checkout/', MarketplaceViews.checkout, name='checkout'),
+    # CHECKOUT
+    path('checkout/', MarketplaceViews.checkout, name='checkout'),
 
     # # ORDERS
     # path('orders/', include('orders.urls')),

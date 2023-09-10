@@ -61,10 +61,10 @@
                                             <tbody>
                                                 {% for item in cart_items %}
                                                 <tr>
-                                                    <td><img src="{{ item.fooditem.image.url }}" width="40" alt="Food Image"></td>
-                                                    <td><b>{{ item.fooditem }}</b></td>
+                                                    <td><img src="{{ item.product_item.image.url }}" width="40" alt="Food Image"></td>
+                                                    <td><b>{{ item.product_item }}</b></td>
                                                     <td>{{ item.quantity }}</td>
-                                                    <td>${{ item.fooditem.price }}</td>
+                                                    <td>${{ item.product_item.price }}</td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>

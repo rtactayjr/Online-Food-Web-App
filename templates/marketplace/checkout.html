@@ -21,7 +21,7 @@
                                 
                                     <div id="menu-item-list-6272" class="menu-itam-list">
                                         
-                                        <form action="" method="POST">
+                                        <form action="{% url  'place_order' %}" method="POST">
                                             {% csrf_token %}
 
                                             <div class="row">
@@ -91,9 +91,7 @@
                                 <div class="menu-itam-holder">
 
                                     <div id="menu-item-list-6272" class="menu-itam-list">
-                                        
                                         <ul>
-                                            
                                                 {% for item in cart_items %}
                                                 <li id="cart-item-{{item.id}}">
                                                     <div class="image-holder"> <img src="{{ item.product_item.image.url }}" alt=""></div>
@@ -111,11 +109,7 @@
                                                     </div>
                                                 </li>
                                                 {% endfor %}
-                                            
                                         </ul>
-                                        
-                                        
-                                        
                                     </div>
                                     
                                     <div>

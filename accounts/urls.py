@@ -45,7 +45,5 @@ urlpatterns = [
 
     # URL for accessing the "Merchant" app (including its own URLs)
     path('merchant/', include('merchant.urls')),
-
-
-    # path('customer/', include('customers.urls')),
+    path('customer/', include('customers.urls')),
 ]

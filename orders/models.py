@@ -60,16 +60,16 @@ class Order(models.Model):
         return f'{self.first_name} {self.last_name}'
 
     def order_placed_to(self):
-        return ", ".join([str(i) for i in self.vendors.all()])
+        return ", ".join([str(i) for i in self.merchants.all()])
 
-    def get_total_by_vendor(self):
-        vendor = Merchant.objects.get(user=request_object.user)
+    def get_total_by_merchant(self):
+        merchant = Merchant.objects.get(user=request_object.user)
         subtotal = 0
         tax = 0
         tax_dict = {}
         if self.total_data:
             total_data = json.loads(self.total_data)
-            data = total_data.get(str(vendor.id))
+            data = total_data.get(str(merchant.id))
             
             
             for key, val in data.items():

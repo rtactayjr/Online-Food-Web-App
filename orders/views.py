@@ -152,6 +152,7 @@ def payments(request):
             ordered_food.price = item.product_item.price
             ordered_food.amount = item.product_item.price * item.quantity # total amount
             ordered_food.save()
+            print(ordered_food)
 
         # SEND ORDER CONFIRMATION EMAIL TO THE CUSTOMER
         mail_subject = 'Thank you for ordering with us.'
@@ -208,4 +209,25 @@ def payments(request):
     return HttpResponse('Payments view')
 
 def order_complete(request):
-    pass
+    order_number = request.GET.get('order_no')
+    transaction_id = request.GET.get('trans_id')
+
+    try:
+        order = Order.objects.get(order_number=order_number, payment__transaction_id=transaction_id, is_ordered=True)
+        ordered_food = OrderedFood.objects.filter(order=order)
+
+        subtotal = 0
+        for item in ordered_food:
+            subtotal += (item.price * item.quantity)
+
+        tax_data = json.loads(order.tax_data)
+        print(tax_data)
+        context = {
+            'order': order,
+            'ordered_food': ordered_food,
+            'subtotal': subtotal,
+            'tax_data': tax_data,
+        }
+        return render(request, 'orders/order_complete.html', context)
+    except:
+        return redirect('home')

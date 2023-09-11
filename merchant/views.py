@@ -23,6 +23,8 @@ from accounts.views import check_role_merchant
 from menuitems.models import ProductCategory, ProductItem
 from menuitems.forms import ProductCategoryForm, ProductItemForm
 
+from orders.models import Order, OrderedFood
+
 ##########################
 # Create your views here.#
 ##########################
@@ -391,3 +393,30 @@ def remove_operating_hours(request, pk=None):
             hour = get_object_or_404(OperatingHour, pk=pk)
             hour.delete()
             return JsonResponse({'status': 'success', 'id': pk})
+
+
+def merchant_order_detail(request, order_number):
+    try:
+        order = Order.objects.get(order_number=order_number, is_ordered=True)
+        ordered_food = OrderedFood.objects.filter(order=order, product_item__merchant=get_merchant(request))
+
+        context = {
+            'order': order,
+            'ordered_food': ordered_food,
+            'subtotal': order.get_total_by_merchant()['subtotal'],
+            'tax_data': order.get_total_by_merchant()['tax_dict'],
+            'grand_total': order.get_total_by_merchant()['grand_total'],
+        }
+    except:
+        return redirect('merchant')
+
+    return render(request, 'merchants/order_detail.html', context)
+
+def merchant_my_orders(request):
+    merchant = Merchant.objects.get(user=request.user)
+    orders = Order.objects.filter(merchants__in=[merchant.id], is_ordered=True).order_by('created_at')
+
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'merchants/my_orders.html', context)

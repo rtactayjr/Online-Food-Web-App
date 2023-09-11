@@ -40,7 +40,7 @@ urlpatterns = [
     path('operating-hours/add/', views.add_operating_hours, name='add_operating_hours'),
     path('operating-hours/remove/<int:pk>/', views.remove_operating_hours, name='remove_operating_hours'),
 
-    # path('order_detail/<int:order_number>/', views.order_detail, name='vendor_order_detail'),
-    # path('my_orders/', views.my_orders, name='vendor_my_orders'),
+    path('order_detail/<int:order_number>/', views.merchant_order_detail, name='merchant_order_detail'),
+    path('my_orders/', views.merchant_my_orders, name='merchant_my_orders'),
 
 ]

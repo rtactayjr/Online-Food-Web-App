@@ -33,7 +33,9 @@ class Order(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
+
     merchants = models.ManyToManyField(Merchant, blank=True)
+
     order_number = models.CharField(max_length=20)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -46,7 +48,9 @@ class Order(models.Model):
     pin_code = models.CharField(max_length=10)
     total = models.FloatField()
     tax_data = models.JSONField(blank=True, help_text = "Data format: {'tax_type':{'tax_percentage':'tax_amount'}}", null=True)
+
     total_data = models.JSONField(blank=True, null=True)
+    
     total_tax = models.FloatField()
     payment_method = models.CharField(max_length=25)
     status = models.CharField(max_length=15, choices=STATUS, default='New')
@@ -101,6 +105,7 @@ class OrderedFood(models.Model):
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE)
+
     quantity = models.IntegerField()
     price = models.FloatField()
     amount = models.FloatField()

@@ -22,6 +22,7 @@ from merchant.forms import MerchantForm
 from merchant.models import Merchant
 from orders.models import Order
 
+import datetime
 
 
 
@@ -368,9 +369,34 @@ def myAccount(request):
 def merchantDashboard(request):
     # Get the merchant associated with the currently logged-in user
     merchant = Merchant.objects.get(user=request.user)
+    orders = Order.objects.filter(merchants__in=[merchant.id], is_ordered=True).order_by('created_at')
+    recent_orders = orders[:10]
+
+    # current month's revenue
+    current_month = datetime.datetime.now().month
+    current_month_orders = orders.filter(merchants__in=[merchant.id], created_at__month=current_month)
+    current_month_revenue = 0
+    for i in current_month_orders:
+        current_month_revenue += i.get_total_by_merchant()['grand_total']
+
+    # total revenue
+    total_revenue = 0
+    for i in orders:
+        total_revenue += i.get_total_by_merchant()['grand_total']
+    context = {
+        'orders': orders,
+        'orders_count': orders.count(),
+        'recent_orders': recent_orders,
+        'total_revenue': total_revenue,
+        'current_month_revenue': current_month_revenue,
+    }
 
     context = {
         'merchant': merchant,
+        'orders_count': orders.count(),
+        'recent_orders': recent_orders,
+        'total_revenue': total_revenue,
+        'current_month_revenue': current_month_revenue,
     }
     
     # Render the 'merchantDashboard' template with the merchant's context

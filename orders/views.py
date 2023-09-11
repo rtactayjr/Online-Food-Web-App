@@ -37,14 +37,14 @@ def place_order(request):
     k = {}
     for i in cart_items:
         product_item = ProductItem.objects.get(pk=i.product_item.id, merchant_id__in=merchants_ids)
-        v_id = product_item.merchant.id
-        if v_id in k:
-            subtotal = k[v_id]
+        m_id = product_item.merchant.id
+        if m_id in k:
+            subtotal = k[m_id]
             subtotal += (product_item.price * i.quantity)
-            k[v_id] = subtotal
+            k[m_id] = subtotal
         else:
             subtotal = (product_item.price * i.quantity)
-            k[v_id] = subtotal
+            k[m_id] = subtotal
     
         # Calculate the tax_data
         tax_dict = {}

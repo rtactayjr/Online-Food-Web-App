@@ -20,6 +20,7 @@ from . utils import detectUser, send_verification_email
 
 from merchant.forms import MerchantForm
 from merchant.models import Merchant
+from orders.models import Order
 
 
 
@@ -379,5 +380,14 @@ def merchantDashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def customerDashboard(request):
+
+    orders = Order.objects.filter(user=request.user, is_ordered=True)
+    recent_orders = orders[:5]
+    context = {
+        'orders': orders,
+        'orders_count': orders.count(),
+        'recent_orders': recent_orders,
+    }
+
     # Render the 'customerDashboard' template
-    return render(request, 'accounts/customerDashboard.html')
+    return render(request, 'accounts/customerDashboard.html', context)

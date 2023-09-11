@@ -14,8 +14,6 @@ import razorpay
 from django.contrib.sites.shortcuts import get_current_site
 
 # from Online_Food_Web_App_Main.settings import RZP_KEY_ID, RZP_KEY_SECRET
-# Create your views here.
-
 # client = razorpay.Client(auth=(RZP_KEY_ID, RZP_KEY_SECRET))
 
 
@@ -88,16 +86,16 @@ def place_order(request):
             order.merchants.add(*merchants_ids)
             order.save()
 
-            # RazorPay Payment
-            DATA = {
-                "amount": float(order.total) * 100,
-                "currency": "INR",
-                "receipt": "receipt #"+order.order_number,
-                "notes": {
-                    "key1": "value3",
-                    "key2": "value2"
-                }
-            }
+            # # RazorPay Payment
+            # DATA = {
+            #     "amount": float(order.total) * 100,
+            #     "currency": "INR",
+            #     "receipt": "receipt #"+order.order_number,
+            #     "notes": {
+            #         "key1": "value3",
+            #         "key2": "value2"
+            #     }
+            # }
             # rzp_order = client.order.create(data=DATA)
             # rzp_order_id = rzp_order['id']
 
@@ -106,7 +104,7 @@ def place_order(request):
                 'cart_items': cart_items,
                 # 'rzp_order_id': rzp_order_id,
                 # 'RZP_KEY_ID': RZP_KEY_ID,
-                'rzp_amount': float(order.total) * 100,
+                # 'rzp_amount': float(order.total) * 100,
             }
             return render(request, 'orders/place_order.html', context)
 
